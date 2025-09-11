@@ -1,24 +1,5 @@
 # Installation de GLPI sur un Conteneur Proxmox VE (PVE)
 
-## 📑 Table des Matières
-- [Prérequis](#-prérequis)
-- [Mise à jour du système](#️-mise-à-jour-du-système)
-- [Installation des dépendances](#-installation-des-dépendances)
-- [Sécurisation de MariaDB](#-sécurisation-de-mariadb)
-- [Création de la Base de Données](#️-création-de-la-base-de-données)
-- [Téléchargement & Installation de GLPI](#️-téléchargement--installation-de-glpi)
-- [Organisation des répertoires](#-organisation-des-répertoires)
-- [Configuration de GLPI](#-configuration-de-glpi)
-- [Configuration Virtual Host Apache](#-configuration-virtual-host-apache)
-- [Activation du site](#-activation-du-site)
-- [Installation via l’interface Web](#️-installation-via-linterface-web)
-- [Première Connexion](#-première-connexion)
-- [Nettoyage](#-nettoyage)
-- [Félicitations](#-félicitations)
-- [Liens utiles](#-liens-utiles)
-
----
-
 Bienvenue dans ce guide d’installation de **GLPI** sur un conteneur Debian 12 sous **Proxmox VE**.  
 Ce tutoriel vous accompagne étape par étape pour mettre en place GLPI, un gestionnaire de parc informatique et de helpdesk.
 
