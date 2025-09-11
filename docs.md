@@ -1,14 +1,19 @@
-# Installation du service Apache
+#Mise en oeuvre de l'HTTPS sur un serveur web
+# Utilisation d'une autorité de certification insterne
 
-## Étape 1 : Mise à jour du système
+## 1. Préparation de la machine CA
+- Configuration IP : /etc/network/interfaces
 ```bash
-sudo apt update && sudo apt upgrade -y
+iface ens33 inet static
+        address 172.16.0.20
+        netmask 255.255.255.0
+        gateway 172.16.0.254
+        dns-nameservers 8.8.8.8
 ```
 
-## Étape 2 : Installation
+- Installation d'openssl 
 ```bash
-sudo apt install apache2 -y
-```
+apt update apt update && apt upgrade -y
+apt install openssl
 
-## Vérification
-- Ouvrir le navigateur et aller sur : [http://localhost](http://localhost)
+```
