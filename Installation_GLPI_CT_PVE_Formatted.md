@@ -134,20 +134,47 @@ DocumentRoot /var/www/glpi/public
 Et ajoutez :
 
 ```bash
-cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/glpi.company.infra.conf
-nano /etc/apache2/sites-available/glpi.company.infra.conf
+<Directory /var/www/glpi/public>
+    Require all granted
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</Directory>
 ```
-Exemple de configuration :
-<VirtualHost *:80>
-    ServerName glpi.company.infra
-    DocumentRoot /var/www/glpi/public
+La fin de Balise Directory doit être placé juste au dessus de la dernière balise VirtualHost.
 
-    <Directory /var/www/glpi/public>
-        Require all granted
-        RewriteEngine On
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteRule ^(.*)$ index.php [QSA,L]
-    </Directory>
-</VirtualHost>
+##Activation du Site & du module Apache
+```bash
+a2ensite glpi.company.infra.conf
+a2dissite 000-default.conf
+a2enmod rewrite
+systemctl restart apache2
+```
 
+## Configuration PHP
+nano /etc/php/8.2/apache2/php.ini
 
+Dans le fichier rechercher la ligne: session.cookie_httponly =
+
+Et modifier la comme suit :
+
+session.cookie_httponly = 1
+
+##Redémarrage Apache
+systemctl restart apache2
+##Interface Web GLPI
+#Installation Web Interface
+Sélectionnez la langue souhaitée puis cliquez sur "OK".
+
+Acceptez la licence en cliquant sur "Accepter".
+
+Choisissez "Installer" pour débuter le processus d'installation.
+
+Vérifiez la compatibilité de votre environnement avec l'exécution de GLPI et cliquez sur "Continuer".
+
+#Connexion à la Base de Données
+Remplissez les informations suivantes :
+
+Serveur SQL : localhost
+Utilisateur SQL : Adminglpi
+Mot de Passe SQL : Password123!
