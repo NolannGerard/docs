@@ -61,4 +61,30 @@ Disallow root login remotely : Y
 Remove test database : Y
 
 Reload privilege tables : Y
+
+
 ##🗄️Création de la Base de Données
+```bash
+CREATE DATABASE companyGLPI;
+GRANT ALL PRIVILEGES ON companyGLPI.* TO 'Adminglpi'@'localhost' IDENTIFIED BY 'Password123!';
+FLUSH PRIVILEGES;
+EXIT;
+
+```
+##⬇️ Téléchargement & Installation de GLPI
+```bash
+cd /tmp
+wget https://github.com/glpi-project/glpi/releases/download/10.0.12/glpi-10.0.12.tgz
+tar -xzvf glpi-10.0.12.tgz -C /var/www/
+chown -R www-data:www-data /var/www/glpi/
+
+```
+##📂 Organisation des répertoires
+```bash
+mv /var/www/glpi/config /etc/glpi
+mv /var/www/glpi/files /var/lib/glpi
+mkdir /var/log/glpi
+chown www-data:www-data /var/log/glpi
+```
+
+
