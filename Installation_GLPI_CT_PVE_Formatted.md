@@ -51,6 +51,7 @@ apt install php-xml php-common php-json php-mysql php-mbstring php-curl php-gd p
 ```bash
 mysql_secure_installation
 ```
+Unix switch : N
 
 Change root password : Y
 
@@ -65,6 +66,9 @@ Reload privilege tables : Y
 
 ##🗄️Création de la Base de Données
 ```bash
+mysql -u root -p
+```
+```bash
 CREATE DATABASE companyGLPI;
 GRANT ALL PRIVILEGES ON companyGLPI.* TO 'Adminglpi'@'localhost' IDENTIFIED BY 'Password123!';
 FLUSH PRIVILEGES;
@@ -74,15 +78,23 @@ EXIT;
 ##⬇️ Téléchargement & Installation de GLPI
 ```bash
 cd /tmp
+```
+```bash
 wget https://github.com/glpi-project/glpi/releases/download/10.0.12/glpi-10.0.12.tgz
 tar -xzvf glpi-10.0.12.tgz -C /var/www/
-chown -R www-data:www-data /var/www/glpi/
-
 ```
+##Config permision
+```bash
+chown -R www-data:www-data /var/www/glpi/
+```
+
 ##📂 Organisation des répertoires
 ```bash
 mv /var/www/glpi/config /etc/glpi
 mv /var/www/glpi/files /var/lib/glpi
+```
+Création des répertoires de logs
+```bash
 mkdir /var/log/glpi
 chown www-data:www-data /var/log/glpi
 ```
@@ -99,7 +111,7 @@ if (file_exists(GLPI_CONFIG_DIR . '/local_define.php')) {
 ?>
 ```
 ```bash
-/etc/glpi/local_define.php :
+nano /etc/glpi/local_define.php :
 ```
 
 ```bash
@@ -113,6 +125,11 @@ define('GLPI_LOG_DIR', '/var/log/glpi');
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/glpi.company.infra.conf
 nano /etc/apache2/sites-available/glpi.company.infra.conf
 ```
+## Modifier ensuite le contenu comme suit :
+
+ServerName glpi.company.infra
+DocumentRoot /var/www/glpi/public
+Et ajoutez :
 ```bash
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/glpi.company.infra.conf
 nano /etc/apache2/sites-available/glpi.company.infra.conf
