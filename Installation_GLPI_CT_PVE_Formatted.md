@@ -142,9 +142,12 @@ Et modifier la comme suit :
 session.cookie_httponly = 1
 
 ##Redémarrage Apache
+```bash
 systemctl restart apache2
+```
 ##Interface Web GLPI
 #Installation Web Interface
+
 Sélectionnez la langue souhaitée puis cliquez sur "OK".
 
 Acceptez la licence en cliquant sur "Accepter".
@@ -153,9 +156,22 @@ Choisissez "Installer" pour débuter le processus d'installation.
 
 Vérifiez la compatibilité de votre environnement avec l'exécution de GLPI et cliquez sur "Continuer".
 
-#Connexion à la Base de Données
+##Connexion à la Base de Données
 Remplissez les informations suivantes :
 
 Serveur SQL : localhost
+
 Utilisateur SQL : Adminglpi
+
 Mot de Passe SQL : Password123!
+
+##Finalisation de l'Installation
+Cliquez sur "Continuer" pour achever l'installation.
+##Première Connexion à GLPI
+
+
+Vous êtes maintenant prêt à utiliser GLPI. Connectez-vous en utilisant les identifiants suivants :
+
+Nom d'utilisateur : glpi
+Mot de passe : glpi
+
