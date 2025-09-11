@@ -87,6 +87,6 @@ mkdir /var/log/glpi
 chown www-data:www-data /var/log/glpi
 ```
 ##⚙️ Configuration de GLPI
-
+```bash
 /var/www/glpi/inc/downstream.php :
-
+```
