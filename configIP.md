@@ -10,10 +10,3 @@ iface ens33 inet static
         gateway 172.16.0.254
         dns-nameservers 8.8.8.8
 ```
-
-- Installation d'openssl 
-```bash
-apt update apt update && apt upgrade -y
-apt install openssl
-
-```
