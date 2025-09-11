@@ -125,11 +125,14 @@ define('GLPI_LOG_DIR', '/var/log/glpi');
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/glpi.company.infra.conf
 nano /etc/apache2/sites-available/glpi.company.infra.conf
 ```
-## Modifier ensuite le contenu comme suit :
+ Modifier ensuite le contenu comme suit :
 
 ServerName glpi.company.infra
+
 DocumentRoot /var/www/glpi/public
+
 Et ajoutez :
+
 ```bash
 cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/glpi.company.infra.conf
 nano /etc/apache2/sites-available/glpi.company.infra.conf
