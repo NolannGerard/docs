@@ -52,13 +52,13 @@ apt install php-xml php-common php-json php-mysql php-mbstring php-curl php-gd p
 mysql_secure_installation
 ```
 
-### Change root password : Y
+Change root password : Y
 
-### Remove anonymous users : Y
+Remove anonymous users : Y
 
-### Disallow root login remotely : Y
+Disallow root login remotely : Y
 
-### Remove test database : Y
+Remove test database : Y
 
 Reload privilege tables : Y
-##🗄️ Création de la Base de Données
+##🗄️Création de la Base de Données
