@@ -86,5 +86,7 @@ mv /var/www/glpi/files /var/lib/glpi
 mkdir /var/log/glpi
 chown www-data:www-data /var/log/glpi
 ```
+##⚙️ Configuration de GLPI
 
+/var/www/glpi/inc/downstream.php :
 
