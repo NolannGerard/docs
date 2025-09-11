@@ -101,3 +101,33 @@ if (file_exists(GLPI_CONFIG_DIR . '/local_define.php')) {
 ```bash
 /etc/glpi/local_define.php :
 ```
+
+```bash
+<?php
+define('GLPI_VAR_DIR', '/var/lib/glpi');
+define('GLPI_LOG_DIR', '/var/log/glpi');
+?>
+```
+##🌍 Configuration Virtual Host Apache
+```bash
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/glpi.company.infra.conf
+nano /etc/apache2/sites-available/glpi.company.infra.conf
+```
+```bash
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/glpi.company.infra.conf
+nano /etc/apache2/sites-available/glpi.company.infra.conf
+```
+Exemple de configuration :
+<VirtualHost *:80>
+    ServerName glpi.company.infra
+    DocumentRoot /var/www/glpi/public
+
+    <Directory /var/www/glpi/public>
+        Require all granted
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^(.*)$ index.php [QSA,L]
+    </Directory>
+</VirtualHost>
+
+
