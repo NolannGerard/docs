@@ -40,3 +40,25 @@ Ce tutoriel vous accompagne étape par étape pour mettre en place GLPI, un gest
 
 ```bash
 apt update && apt upgrade -y
+```
+##📦 Installation des dépendances
+```bash
+apt install apache2 php mariadb-server -y
+apt install php-xml php-common php-json php-mysql php-mbstring php-curl php-gd php-intl php-zip php-bz2 php-imap php-ldap -y
+
+```
+##🔐 Sécurisation de MariaDB
+```bash
+mysql_secure_installation
+```
+
+### Change root password : Y
+
+### Remove anonymous users : Y
+
+### Disallow root login remotely : Y
+
+### Remove test database : Y
+
+Reload privilege tables : Y
+##🗄️ Création de la Base de Données
