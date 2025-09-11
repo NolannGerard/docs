@@ -90,3 +90,14 @@ chown www-data:www-data /var/log/glpi
 ```bash
 /var/www/glpi/inc/downstream.php :
 ```
+```bash
+<?php
+define('GLPI_CONFIG_DIR', '/etc/glpi/');
+if (file_exists(GLPI_CONFIG_DIR . '/local_define.php')) {
+    require_once GLPI_CONFIG_DIR . '/local_define.php';
+}
+?>
+```
+```bash
+/etc/glpi/local_define.php :
+```
