@@ -1,0 +1,179 @@
+Je vais te préparer TOUT le TP, entièrement propre, en blocs prêts à copier-coller, sans bla-bla.
+
+✅ Cluster Pacemaker
+✅ Apache en actif/actif
+✅ MariaDB (déjà fait)
+✅ HAProxy HTTP
+✅ HAProxy statistiques
+✅ HAProxy HTTPS
+✅ Redirection HTTP → HTTPS
+✅ Correction Apache2 pour désactiver HTTPS
+✅ Pages web différentes sur serv1 et serv2
+
+Tout sera prêt à copier-coller directement dans tes fichiers.
+
+✅ 1) PACEMAKER — Conversion du service Apache2 en actif/actif
+
+📌 Sur serv1
+
+👉 Copier-coller :
+
+crm resource stop serviceWeb
+crm resource stop IPFailover
+crm configure delete servweb
+crm resource start IPFailover
+crm configure clone cServiceWeb serviceWeb
+crm resource start serviceWeb
+
+✅ 2) MARIADB — Configuration anti-collision auto_increment
+
+✅ sur serv1
+
+echo "auto_increment_offset = 1" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+echo "auto_increment_increment = 2" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+
+
+✅ sur serv2
+
+echo "auto_increment_offset = 2" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+echo "auto_increment_increment = 2" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+
+
+✅ Redémarrage :
+
+systemctl restart mariadb
+
+✅ 3) APACHE2 — Désactiver HTTPS & activer uniquement HTTP
+
+📌 Fichier /etc/apache2/sites-available/sodecaf.conf sur serv1 et serv2
+
+👉 Supprime entièrement toute la partie <VirtualHost *:443> ... </VirtualHost>
+👉 Ne laisse que ceci :
+
+<VirtualHost *:80>
+    DocumentRoot /var/www/html
+    ServerName sodecaf.local
+</VirtualHost>
+
+
+Ensuite :
+
+a2dissite default-ssl.conf
+a2enmod ssl
+systemctl restart apache2
+
+✅ 4) Pages web différentes sur serv1 et serv2
+
+✅ serv1 :
+
+echo "<h1>Accueil1</h1>" > /var/www/html/index.html
+
+
+✅ serv2 :
+
+echo "<h1>Accueil2</h1>" > /var/www/html/index.html
+
+✅ 5) Installation d’HAProxy (sur la VM Debian 12)
+apt update
+apt install -y haproxy
+
+✅ 6) HAProxy HTTP — Configuration simple
+
+📌 Fichier : /etc/haproxy/haproxy.cfg
+
+👉 Efface tout et remplace par :
+
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend proxypublic
+    bind 172.16.0.13:80
+    default_backend fermeweb
+
+backend fermeweb
+    balance roundrobin
+    option httpclose
+    option httpchk HEAD / HTTP/1.0
+    server serv1 192.168.0.1:80 check
+    server serv2 192.168.0.2:80 check
+
+listen stats
+    bind 172.16.0.13:8080
+    stats uri /statsHaproxy
+    stats auth root:Btssio2017
+    stats refresh 30s
+
+
+✅ Redémarrage :
+
+systemctl restart haproxy
+
+✅ 7) HAProxy avec serveurs de puissance inégale (serv2 3x plus faible)
+
+👉 Modifier uniquement le backend :
+
+backend fermeweb
+    balance roundrobin
+    option httpclose
+    option httpchk HEAD / HTTP/1.0
+    server serv1 192.168.0.1:80 weight 3 check
+    server serv2 192.168.0.2:80 weight 1 check
+
+
+✅ Redémarrage :
+
+systemctl restart haproxy
+
+✅ 8) HAProxy — Activer HTTPS côté frontend
+
+✅ Création du certificat :
+
+apt install -y openssl
+mkdir -p /etc/haproxy/cert
+cd /etc/haproxy/cert
+openssl genrsa -out privateKey.pem 4096
+openssl req -new -x509 -days 365 -key privateKey.pem -out cert.pem -subj "/CN=sodecaf"
+cat cert.pem privateKey.pem > sodecaf.pem
+
+
+✅ Ajouter dans /etc/haproxy/haproxy.cfg :
+
+frontend https-in
+    bind 172.16.0.13:443 ssl crt /etc/haproxy/cert/sodecaf.pem
+    default_backend fermeweb
+
+
+✅ Redémarrer :
+
+systemctl restart haproxy
+
+✅ 9) Redirection HTTP → HTTPS
+
+Dans frontend proxypublic, remplacer tout par :
+
+frontend proxypublic
+    bind 172.16.0.13:80
+    http-request redirect scheme https unless { ssl_fc }
+    default_backend fermeweb
+
+
+✅ Redémarrage :
+
+systemctl restart haproxy
+
+✅ 10) Test de configuration HAProxy
+haproxy -c -f /etc/haproxy/haproxy.cfg
